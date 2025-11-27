@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Editor</string>
+    <string name="save">SAVE</string>
+    <string name="text">Text</string>
+    <string name="image">Image</string>
+    <string name="background">Background</string>
+    <string name="graphics">Graphics</string>
+    <string name="shapes">Shapes</string>
+    <string name="my_designs">My Designs</string>
+    <string name="resize">Resize</string>
+
+    <!-- Background Options -->
+    <string name="edit">Edit</string>
+    <string name="border">Border</string>
+    <string name="opacity">Opacity</string>
+    <string name="scale">Scale</string>
+    <string name="blur">Blur</string>
+    <string name="filter">Filter</string>
+    <string name="effects">Effects</string>
+    <string name="blend">Blend</string>
+
+    <!-- Edit Sub Options -->
+    <string name="color">Color</string>
+    <string name="gradient">Gradient</string>
+    <string name="pattern">Pattern</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+
+    <!-- Border Options -->
+    <string name="off">Off</string>
+    <string name="size">Size</string>
+    <string name="solid">Solid</string>
+
+    <!-- Resize Options -->
+    <string name="standard">Standard</string>
+    <string name="basic">Basic</string>
+    <string name="social_media">Social Media</string>
+
+    <!-- Image Options -->
+    <string name="crop">Crop</string>
+
+    <!-- Text -->
+    <string name="add_text">Add Text</string>
+    <string name="enter_text">Enter your text here</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+</resources>
