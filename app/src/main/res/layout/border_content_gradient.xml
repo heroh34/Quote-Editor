@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Left: Gradient Picker Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/gradientPickerCard"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gradient_24px"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:contentDescription="Gradient Picker" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Right: Gradients RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gradientsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>

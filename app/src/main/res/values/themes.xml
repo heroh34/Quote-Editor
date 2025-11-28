@@ -47,6 +47,17 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+
+        <item name="android:fontFamily">@font/nunitosemibold</item>
+        <item name="textAppearanceHeadlineLarge">@style/CustomTextAppearance.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/CustomTextAppearance.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/CustomTextAppearance.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/CustomTextAppearance.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/CustomTextAppearance.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/CustomTextAppearance.TitleSmall</item>
+        <item name="textAppearanceLabelMedium">@style/CustomTextAppearance.LabelMedium</item>
+        <item name="textAppearanceLabelLarge">@style/CustomTextAppearance.LabelLarge</item>
+
     </style>
 
     <style name="Theme.Editor" parent="Base.Theme.Editor" />
