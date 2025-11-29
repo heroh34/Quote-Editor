@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- Left Arrow -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/angleLeftButton"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        app:icon="@drawable/arrow_back_24px"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:cornerRadius="32dp"
+        android:contentDescription="Left" />
+
+    <!-- Up Arrow -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/angleUpButton"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        app:icon="@drawable/arrow_upward_24px"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:cornerRadius="32dp"
+        android:contentDescription="Up" />
+
+    <!-- Down Arrow -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/angleDownButton"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        app:icon="@drawable/arrow_downward_24px"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:cornerRadius="32dp"
+        android:contentDescription="Down" />
+
+    <!-- Right Arrow -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/angleRightButton"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:icon="@drawable/arrow_forward_24px"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:cornerRadius="32dp"
+        android:contentDescription="Right" />
+
+</LinearLayout>

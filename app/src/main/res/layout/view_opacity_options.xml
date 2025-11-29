@@ -6,13 +6,6 @@
     android:padding="24dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Opacity"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/opacityValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,13 +13,11 @@
         android:text="100%"
         android:textSize="14sp" />
 
-    <com.google.android.material.slider.Slider
+    <SeekBar
         android:id="@+id/opacitySlider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:valueFrom="0"
-        android:valueTo="100"
-        android:stepSize="1"
-        android:value="100" />
+        android:max="100"
+        android:progress="5" />
 
 </LinearLayout>

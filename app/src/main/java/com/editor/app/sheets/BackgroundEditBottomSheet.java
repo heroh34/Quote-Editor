@@ -9,30 +9,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.editor.app.R;
+import com.editor.app.api.models.Media;
 import com.editor.app.sheets.background.BorderOptionsView;
 import com.editor.app.sheets.background.EditOptionsView;
 import com.editor.app.sheets.background.OpacityOptionsView;
 import com.editor.app.sheets.background.ScaleOptionsView;
 import com.editor.app.sheets.models.GradientItem;
-import com.editor.app.sheets.models.PatternItem;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 public class BackgroundEditBottomSheet extends BottomSheetDialogFragment {
-    public static final String TAG = "EditOptionsBottomSheet";
+    public static final String TAG = "BackgroundEditBottomSheet";
 
     // Listener interface
     public interface EditOptionsListener {
         void onBorderStateChanged(boolean isOn, int size, int opacity);
+
         void onBorderTypeChanged(BorderType type, int color);
+
+        void onSolidColorSelected(int color);
+
+        void onGradientSelected(GradientItem gradient);
+
+        void onTextureSelected(Media texture);
+
         void onOpacityChanged(int opacity);
+
         void onScaleChanged(int scale);
+
         void onScaleTypeChanged(ScaleType scaleType);
-        void onColorClicked();
-        void onGradientClicked();
-        void onPatternClicked();
+
+        void onBackgroundColorSelected(int color);
+
+        void onBackgroundGradientSelected(GradientItem gradient);
+
+        void onBackgroundTextureSelected(Media texture);
+
         void onGalleryClicked();
+
         void onCameraClicked();
     }
 
@@ -151,31 +166,84 @@ public class BackgroundEditBottomSheet extends BottomSheetDialogFragment {
             editOptionsView.setListener(new EditOptionsView.EditOptionsViewListener() {
                 @Override
                 public void onColorClicked() {
-                    if (listener != null) listener.onColorClicked();
+                    openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode.COLOR);
                 }
 
                 @Override
                 public void onGradientClicked() {
-                    if (listener != null) listener.onGradientClicked();
+                    openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode.GRADIENT);
                 }
 
                 @Override
                 public void onPatternClicked() {
-                    if (listener != null) listener.onPatternClicked();
+                    openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode.PATTERN);
                 }
 
                 @Override
                 public void onGalleryClicked() {
-                    if (listener != null) listener.onGalleryClicked();
+                    openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode.CHOOSE);
                 }
 
                 @Override
                 public void onCameraClicked() {
-                    if (listener != null) listener.onCameraClicked();
+                    openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode.CHOOSE);
                 }
             });
         }
         contentContainer.addView(editOptionsView);
+    }
+
+    private void openColorPickerSheet(ColorPickerBottomSheet.ColorPickerMode mode) {
+        ColorPickerBottomSheet colorPickerSheet = ColorPickerBottomSheet.newInstance(mode);
+        colorPickerSheet.setListener(new ColorPickerBottomSheet.ColorPickerListener() {
+            @Override
+            public void onColorSelected(int color) {
+                if (listener != null) {
+                    listener.onBackgroundColorSelected(color);
+                }
+            }
+
+            @Override
+            public void onGradientSelected(GradientItem gradient) {
+                if (listener != null) {
+                    listener.onBackgroundGradientSelected(gradient);
+                }
+            }
+
+            @Override
+            public void onTextureSelected(Media texture) {
+                if (listener != null) {
+                    listener.onBackgroundTextureSelected(texture);
+                }
+            }
+
+            @Override
+            public void onGalleryClicked() {
+                if (listener != null) {
+                    listener.onGalleryClicked();
+                }
+            }
+
+            @Override
+            public void onCameraClicked() {
+                if (listener != null) {
+                    listener.onCameraClicked();
+                }
+            }
+
+            @Override
+            public void onColorPickerClicked() {
+                // TODO: Open advanced color picker
+            }
+
+            @Override
+            public void onGradientPickerClicked() {
+                // TODO: Open gradient editor
+            }
+        });
+
+        // Show the color picker sheet
+        colorPickerSheet.show(getParentFragmentManager(), ColorPickerBottomSheet.TAG);
     }
 
     private void showBorderOptions() {
@@ -194,32 +262,32 @@ public class BackgroundEditBottomSheet extends BottomSheetDialogFragment {
 
                 @Override
                 public void onSolidColorSelected(int color) {
-
+                    if (listener != null) listener.onSolidColorSelected(color);
                 }
 
                 @Override
                 public void onGradientSelected(GradientItem gradient) {
-
+                    if (listener != null) listener.onGradientSelected(gradient);
                 }
 
                 @Override
-                public void onPatternSelected(PatternItem pattern) {
-
+                public void onTextureSelected(Media texture) {
+                    if (listener != null) listener.onTextureSelected(texture);
                 }
 
                 @Override
                 public void onColorPickerClicked() {
-
+                    // TODO: Open advanced color picker
                 }
 
                 @Override
                 public void onGradientPickerClicked() {
-
+                    // TODO: Open gradient editor
                 }
 
                 @Override
-                public void onSeeAllPatternsClicked() {
-
+                public void onSeeAllTexturesClicked() {
+                    // TODO: Open full texture gallery
                 }
             });
         }

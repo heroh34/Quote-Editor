@@ -9,9 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.editor.app.api.models.Media;
 import com.editor.app.sheets.BackgroundEditBottomSheet;
+import com.editor.app.sheets.ImageEditBottomSheet;
+import com.editor.app.sheets.models.GradientItem;
 
-public class MainActivity extends AppCompatActivity implements BackgroundEditBottomSheet.EditOptionsListener {
+public class MainActivity extends AppCompatActivity implements BackgroundEditBottomSheet.EditOptionsListener,
+ImageEditBottomSheet.ImageEditListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +29,19 @@ public class MainActivity extends AppCompatActivity implements BackgroundEditBot
         });
 
         ImageButton btnShowEditOptions = findViewById(R.id.background_edit_options);
-        btnShowEditOptions.setOnClickListener(v -> showEditOptionsBottomSheet());
+        btnShowEditOptions.setOnClickListener(v -> showImageOptionsBottomSheet());
     }
 
     private void showEditOptionsBottomSheet() {
         BackgroundEditBottomSheet bottomSheet = BackgroundEditBottomSheet.newInstance();
         bottomSheet.setListener(this);
         bottomSheet.show(getSupportFragmentManager(), BackgroundEditBottomSheet.TAG);
+    }
+
+    private void showImageOptionsBottomSheet() {
+        ImageEditBottomSheet bottomSheet = ImageEditBottomSheet.newInstance(ImageEditBottomSheet.ImageEditMode.EDIT);
+        bottomSheet.setListener(this);
+        bottomSheet.show(getSupportFragmentManager(), ImageEditBottomSheet.TAG);
     }
 
     @Override
@@ -41,6 +51,21 @@ public class MainActivity extends AppCompatActivity implements BackgroundEditBot
 
     @Override
     public void onBorderTypeChanged(BackgroundEditBottomSheet.BorderType type, int color) {
+
+    }
+
+    @Override
+    public void onSolidColorSelected(int color) {
+
+    }
+
+    @Override
+    public void onGradientSelected(GradientItem gradient) {
+
+    }
+
+    @Override
+    public void onTextureSelected(Media texture) {
 
     }
 
@@ -60,17 +85,17 @@ public class MainActivity extends AppCompatActivity implements BackgroundEditBot
     }
 
     @Override
-    public void onColorClicked() {
+    public void onBackgroundColorSelected(int color) {
 
     }
 
     @Override
-    public void onGradientClicked() {
+    public void onBackgroundGradientSelected(GradientItem gradient) {
 
     }
 
     @Override
-    public void onPatternClicked() {
+    public void onBackgroundTextureSelected(Media texture) {
 
     }
 
@@ -81,6 +106,91 @@ public class MainActivity extends AppCompatActivity implements BackgroundEditBot
 
     @Override
     public void onCameraClicked() {
+
+    }
+
+    @Override
+    public void onReplaceClicked() {
+
+    }
+
+    @Override
+    public void onEraseClicked() {
+
+    }
+
+    @Override
+    public void onSizeChanged(int size) {
+
+    }
+
+    @Override
+    public void onAspectCropClicked() {
+
+    }
+
+    @Override
+    public void onShapeCropClicked() {
+
+    }
+
+    @Override
+    public void onAIRemoveBackground() {
+
+    }
+
+    @Override
+    public void onColorSelected(int color) {
+
+    }
+
+    @Override
+    public void onColorGradientSelected(GradientItem gradient) {
+
+    }
+
+    @Override
+    public void onRemoveColorClicked() {
+
+    }
+
+    @Override
+    public void onEffectSelected(String effectName) {
+
+    }
+
+    @Override
+    public void onSeeAllEffectsClicked() {
+
+    }
+
+    @Override
+    public void onHueChanged(int hue) {
+
+    }
+
+    @Override
+    public void onShadowAngleChanged(String direction) {
+
+    }
+
+    @Override
+    public void onShadowBlurChanged(int blur) {
+
+    }
+
+    @Override
+    public void onShadowColorSelected(int color) {
+
+    }
+
+    @Override
+    public void onShadowOpacityChanged(int opacity) {
+
+    }
+
+    @Override
+    public void onShadowOff() {
 
     }
 }

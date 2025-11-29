@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Replace Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/replaceButton"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Replace"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/swap_horiz_24px"
+            app:iconGravity="start"
+            app:iconSize="24dp" />
+
+        <!-- Erase Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/eraseButton"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Erase"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/delete_24px"
+            app:iconGravity="start"
+            app:iconSize="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positionLeftButton"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Left"
+            app:cornerRadius="32dp"
+            app:icon="@drawable/arrow_back_24px"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positionUpButton"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Up"
+            app:cornerRadius="32dp"
+            app:icon="@drawable/arrow_upward_24px"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positionUpButton"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Up"
+            app:cornerRadius="32dp"
+            app:icon="@drawable/arrow_upward_24px"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp" />
+
+    </LinearLayout>
+
+</HorizontalScrollView>
+

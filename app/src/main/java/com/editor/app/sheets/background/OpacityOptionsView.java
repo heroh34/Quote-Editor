@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
@@ -17,7 +18,8 @@ public class OpacityOptionsView extends LinearLayout {
     }
 
     private OpacityChangeListener listener;
-    private Slider opacitySlider;
+
+    private SeekBar opacitySlider;
 
     public OpacityOptionsView(Context context) {
         super(context);
@@ -44,9 +46,22 @@ public class OpacityOptionsView extends LinearLayout {
     private void setupViews() {
         opacitySlider = findViewById(R.id.opacitySlider);
 
-        opacitySlider.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser && listener != null) {
-                listener.onOpacityChanged((int) value);
+        opacitySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser && listener != null) {
+                    listener.onOpacityChanged(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }
@@ -56,10 +71,10 @@ public class OpacityOptionsView extends LinearLayout {
     }
 
     public void setOpacity(int opacity) {
-        opacitySlider.setValue(opacity);
+        opacitySlider.setProgress(opacity);
     }
 
     public int getOpacity() {
-        return (int) opacitySlider.getValue();
+        return (int) opacitySlider.getProgress();
     }
 }

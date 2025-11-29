@@ -25,7 +25,6 @@ public class ScaleOptionsView extends LinearLayout {
     }
 
     private ScaleOptionsViewListener listener;
-    private Slider scaleSlider;
     private LinearLayout scaleTypesContainer;
     private ScaleType currentScaleType = ScaleType.ASPECT_FILL;
 
@@ -45,15 +44,6 @@ public class ScaleOptionsView extends LinearLayout {
     }
 
     private void setupViews() {
-        scaleSlider = findViewById(R.id.scaleSlider);
-        scaleTypesContainer = findViewById(R.id.scaleTypesContainer);
-
-        // Slider listener
-        scaleSlider.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser && listener != null) {
-                listener.onScaleChanged((int) value);
-            }
-        });
 
         // Setup scale type buttons
         setupScaleTypeButtons();
@@ -84,10 +74,10 @@ public class ScaleOptionsView extends LinearLayout {
                 R.drawable.fullscreen_24px,
                 R.drawable.center_focus_strong_24px,
                 R.drawable.toolbar_24px,
-//                R.drawable.ic_bottom,
-//                R.drawable.ic_left,
-//                R.drawable.ic_right,
-//                R.drawable.ic_fit
+                R.drawable.bottom_navigation_24px,
+                R.drawable.left_panel_close_24px,
+                R.drawable.right_panel_close_24px,
+                R.drawable.fit_page_width_24px
         };
 
         for (int i = 0; i < scaleTypes.length; i++) {
@@ -133,17 +123,5 @@ public class ScaleOptionsView extends LinearLayout {
 
     public void setListener(ScaleOptionsViewListener listener) {
         this.listener = listener;
-    }
-
-    public void setScale(int scale) {
-        scaleSlider.setValue(scale);
-    }
-
-    public int getScale() {
-        return (int) scaleSlider.getValue();
-    }
-
-    public ScaleType getCurrentScaleType() {
-        return currentScaleType;
     }
 }

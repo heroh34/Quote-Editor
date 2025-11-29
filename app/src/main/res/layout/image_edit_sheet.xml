@@ -25,7 +25,7 @@
             android:layout_marginStart="4dp"
             android:contentDescription="Back" />
 
-        <!-- Top Chip Navigation -->
+        <!-- Chips -->
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -33,13 +33,12 @@
             android:scrollbars="none">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+                android:id="@+id/imageEditChipGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="16dp"
                 app:chipSpacing="8dp"
                 app:singleSelection="true">
-
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -52,14 +51,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
-    <!-- Bottom Icon Navigation -->
-    <LinearLayout
-        android:id="@+id/contentContainer"
+    <!-- Dynamic Content Container -->
+    <FrameLayout
+        android:id="@+id/imageEditContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:minHeight="120dp">
 
+        <!-- Content views will be added dynamically -->
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/scaleTypeIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/fullscreen_24px"
             android:scaleType="fitCenter" />

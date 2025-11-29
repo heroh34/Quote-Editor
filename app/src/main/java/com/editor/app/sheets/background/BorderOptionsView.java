@@ -3,52 +3,55 @@ package com.editor.app.sheets.background;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.editor.app.R;
-import com.editor.app.sheets.BackgroundEditBottomSheet;
+import com.editor.app.api.WallpaperClient;
+import com.editor.app.api.models.Media;
+import com.editor.app.api.models.SearchResponse;
 import com.editor.app.sheets.BackgroundEditBottomSheet.BorderType;
 import com.editor.app.sheets.adapters.ColorAdapter;
 import com.editor.app.sheets.adapters.GradientAdapter;
-import com.editor.app.sheets.adapters.PatternAdapter;
+import com.editor.app.sheets.adapters.TextureAdapter;
 import com.editor.app.sheets.models.ColorItem;
 import com.editor.app.sheets.models.GradientItem;
-import com.editor.app.sheets.models.PatternItem;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BorderOptionsView extends LinearLayout {
+    private static final String TAG = "BorderOptionsView";
+
     public interface BorderOptionsViewListener {
         void onBorderStateChanged(boolean isOn, int size, int opacity);
-
         void onBorderTypeChanged(BorderType type, int color);
-
         void onSolidColorSelected(int color);
-
         void onGradientSelected(GradientItem gradient);
-
-        void onPatternSelected(PatternItem pattern);
-
+        void onTextureSelected(Media texture);
         void onColorPickerClicked();
-
         void onGradientPickerClicked();
-
-        void onSeeAllPatternsClicked();
+        void onSeeAllTexturesClicked();
     }
 
     private enum BorderSubOption {
@@ -67,7 +70,13 @@ public class BorderOptionsView extends LinearLayout {
     private BorderSubOption currentSubOption = BorderSubOption.OFF;
 
     // Content views (cached)
-    private View sizeContent, solidContent, gradientContent, patternContent, opacityContent;
+    private View offContent, sizeContent, solidContent, gradientContent, patternContent, opacityContent;
+
+    // Texture data
+    private TextureAdapter textureAdapter;
+    private List<Media> textureList = new ArrayList<>();
+    private int currentPage = 1;
+    private boolean isLoadingTextures = false;
 
     public BorderOptionsView(Context context) {
         super(context);
@@ -121,7 +130,7 @@ public class BorderOptionsView extends LinearLayout {
 
         switch (subOption) {
             case OFF:
-                // No content to show
+                showOffContent();
                 if (listener != null) {
                     listener.onBorderTypeChanged(BorderType.OFF, 0);
                 }
@@ -155,6 +164,21 @@ public class BorderOptionsView extends LinearLayout {
         notifyBorderStateChanged();
     }
 
+    private void showOffContent() {
+        if (offContent == null) {
+            offContent = LayoutInflater.from(getContext())
+                    .inflate(R.layout.border_content_off, contentContainer, false);
+
+            MaterialButton enableButton = offContent.findViewById(R.id.enableBorderButton);
+            enableButton.setOnClickListener(v -> {
+                // Enable border and switch to Size chip
+                chipSize.setChecked(true);
+                showSubOption(BorderSubOption.SIZE);
+            });
+        }
+        contentContainer.addView(offContent);
+    }
+
     private void showSizeContent() {
         if (sizeContent == null) {
             sizeContent = LayoutInflater.from(getContext())
@@ -178,12 +202,10 @@ public class BorderOptionsView extends LinearLayout {
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-
                 }
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-
                 }
             });
         }
@@ -227,6 +249,7 @@ public class BorderOptionsView extends LinearLayout {
 
         eyedropperCard.setOnClickListener(v -> {
             // TODO: Implement eyedropper functionality
+            Toast.makeText(getContext(), "Eyedropper coming soon!", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -276,24 +299,87 @@ public class BorderOptionsView extends LinearLayout {
 
     private void setupPatternPickers() {
         MaterialCardView seeAllCard = patternContent.findViewById(R.id.seeAllPatternsCard);
-        RecyclerView patternsRecyclerView = patternContent.findViewById(R.id.patternsRecyclerView);
+        RecyclerView texturesRecyclerView = patternContent.findViewById(R.id.patternsRecyclerView);
 
-        // Setup RecyclerView
-        patternsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), HORIZONTAL, false));
+        // Setup RecyclerView with horizontal layout
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), HORIZONTAL, false);
+        texturesRecyclerView.setLayoutManager(layoutManager);
 
-        // Get patterns from library
-        // List<PatternItem> patterns = PatternLibrary.getFeaturedPatterns();
-        PatternAdapter adapter = new PatternAdapter(new ArrayList<>(), (pattern, position) -> {
+        // Setup adapter
+        textureAdapter = new TextureAdapter(textureList, (texture, position) -> {
             if (listener != null) {
-                listener.onPatternSelected(pattern);
+                listener.onTextureSelected(texture);
             }
         });
-        patternsRecyclerView.setAdapter(adapter);
+        texturesRecyclerView.setAdapter(textureAdapter);
+
+        // Load textures from Unsplash
+        loadTexturesFromUnsplash();
+
+        // Pagination on scroll
+        texturesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (manager != null) {
+                    int visibleItemCount = manager.getChildCount();
+                    int totalItemCount = manager.getItemCount();
+                    int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+
+                    if (!isLoadingTextures && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 2) {
+                        loadTexturesFromUnsplash();
+                    }
+                }
+            }
+        });
 
         // See All button listener
         seeAllCard.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onSeeAllPatternsClicked();
+                listener.onSeeAllTexturesClicked();
+            }
+        });
+    }
+
+    private void loadTexturesFromUnsplash() {
+        if (isLoadingTextures) return;
+
+        isLoadingTextures = true;
+
+        WallpaperClient.getApi().getSearchMedia(
+                "photos",
+                currentPage,
+                20,
+                "landscape",
+                "texture pattern"
+        ).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
+                isLoadingTextures = false;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    SearchResponse searchResponse = response.body();
+                    List<Media> newTextures = searchResponse.getResults();
+
+                    if (newTextures != null && !newTextures.isEmpty()) {
+                        if (textureAdapter != null) {
+                            textureAdapter.addTextures(newTextures);
+                            currentPage++;
+                        }
+                        Log.d(TAG, "Loaded " + newTextures.size() + " textures from page " + currentPage);
+                    }
+                } else {
+                    Log.e(TAG, "Failed to load textures: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t) {
+                isLoadingTextures = false;
+                Log.e(TAG, "Error loading textures", t);
+                Toast.makeText(getContext(), "Failed to load textures", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -321,12 +407,10 @@ public class BorderOptionsView extends LinearLayout {
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-
                 }
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-
                 }
             });
         }
@@ -362,7 +446,6 @@ public class BorderOptionsView extends LinearLayout {
     private List<GradientItem> createGradientList() {
         List<GradientItem> gradients = new ArrayList<>();
 
-        // Create some sample gradients
         gradients.add(new GradientItem(
                 new int[]{Color.parseColor("#667eea"), Color.parseColor("#764ba2")},
                 "Purple Dream"));

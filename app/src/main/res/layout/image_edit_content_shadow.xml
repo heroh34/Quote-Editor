@@ -4,86 +4,79 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="8dp">
+    android:padding="8dp">
 
-    <!-- Border Type Chips -->
+    <!-- Shadow Sub-Option Chips -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_marginBottom="12dp">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/borderTypeChipGroup"
+            android:id="@+id/shadowSubOptionsChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipSpacing="8dp"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipOff"
+                android:id="@+id/shadowOffChip"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Off"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
+                app:chipCornerRadius="20dp"
+                app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipSize"
+                android:id="@+id/shadowAngleChip"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Size"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
+                android:text="Angle"
+                app:chipCornerRadius="20dp"
+                app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipSolid"
+                android:id="@+id/shadowBlurChip"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Solid"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
+                android:text="Blur"
+                app:chipCornerRadius="20dp"
+                app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipGradient"
+                android:id="@+id/shadowColorChip"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gradient"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
+                android:text="Color"
+                app:chipCornerRadius="20dp"
+                app:checkedIconVisible="false" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipPattern"
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pattern"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipOpacity"
+                android:id="@+id/shadowOpacityChip"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Opacity"
-                app:checkedIconVisible="false"
-                app:chipCornerRadius="20dp" />
+                app:chipCornerRadius="20dp"
+                app:checkedIconVisible="false" />
 
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
 
-    <!-- Dynamic Content Container -->
+    <!-- Dynamic Shadow Content Container -->
     <FrameLayout
-        android:id="@+id/borderContentContainer"
+        android:id="@+id/shadowContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="wrap_content"
+        android:minHeight="80dp">
 
-        <!-- Content views will be added dynamically -->
+        <!-- Content will be added dynamically -->
 
     </FrameLayout>
 
