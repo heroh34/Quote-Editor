@@ -6,20 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.editor.app.R;
 import com.editor.app.api.WallpaperClient;
 import com.editor.app.api.models.Media;
 import com.editor.app.api.models.SearchResponse;
-import com.editor.app.sheets.adapters.ColorAdapter;
-import com.editor.app.sheets.adapters.GradientAdapter;
-import com.editor.app.sheets.adapters.TextureAdapter;
+import com.editor.app.sheets.adapters.ColorViewBinder;
+import com.editor.app.sheets.adapters.GradientViewBinder;
+import com.editor.app.sheets.adapters.TextureViewBinder;
 import com.editor.app.sheets.models.ColorItem;
 import com.editor.app.sheets.models.GradientItem;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -42,11 +41,17 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
     // Listener interface
     public interface ColorPickerListener {
         void onColorSelected(int color);
+
         void onGradientSelected(GradientItem gradient);
+
         void onTextureSelected(Media texture);
+
         void onGalleryClicked();
+
         void onCameraClicked();
+
         void onColorPickerClicked();
+
         void onGradientPickerClicked();
     }
 
@@ -65,10 +70,7 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
     private View colorContent, gradientContent, patternContent, chooseContent;
 
     // Texture data
-    private TextureAdapter textureAdapter;
-    private List<Media> textureList = new ArrayList<>();
-    private int currentPage = 1;
-    private boolean isLoadingTextures = false;
+    private TextureViewBinder textureBinder;
 
     public static ColorPickerBottomSheet newInstance(ColorPickerMode selectedMode) {
         ColorPickerBottomSheet sheet = new ColorPickerBottomSheet();
@@ -180,19 +182,16 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
     private void setupColorPickers() {
         MaterialCardView gradientPickerCard = colorContent.findViewById(R.id.gradientPickerCard);
         MaterialCardView eyedropperCard = colorContent.findViewById(R.id.eyedropperCard);
-        RecyclerView colorsRecyclerView = colorContent.findViewById(R.id.colorsRecyclerView);
 
-        // Setup RecyclerView
-        colorsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        // Create color list
         List<ColorItem> colors = createColorList();
-        ColorAdapter adapter = new ColorAdapter(colors, (color, position) -> {
+
+        LinearLayout colorsContainer = colorContent.findViewById(R.id.colorsContainer);
+
+        new ColorViewBinder(colorsContainer, colors, (color, position) -> {
             if (listener != null) {
                 listener.onColorSelected(color);
             }
         });
-        colorsRecyclerView.setAdapter(adapter);
 
         // Picker card listener
         gradientPickerCard.setOnClickListener(v -> {
@@ -219,19 +218,15 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
 
     private void setupGradientPickers() {
         MaterialCardView gradientPickerCard = gradientContent.findViewById(R.id.gradientPickerCard);
-        RecyclerView gradientsRecyclerView = gradientContent.findViewById(R.id.gradientsRecyclerView);
-
-        // Setup RecyclerView
-        gradientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        // Create gradient list
         List<GradientItem> gradients = createGradientList();
-        GradientAdapter adapter = new GradientAdapter(gradients, (gradient, position) -> {
+
+        LinearLayout gradientsContainer = gradientContent.findViewById(R.id.gradientsContainer);
+
+        new GradientViewBinder(gradientsContainer, gradients, (gradient, position) -> {
             if (listener != null) {
                 listener.onGradientSelected(gradient);
             }
         });
-        gradientsRecyclerView.setAdapter(adapter);
 
         // Picker card listener
         gradientPickerCard.setOnClickListener(v -> {
@@ -258,73 +253,40 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
 
     private void setupPatternPickers() {
         MaterialCardView seeAllCard = patternContent.findViewById(R.id.seeAllPatternsCard);
-        RecyclerView texturesRecyclerView = patternContent.findViewById(R.id.patternsRecyclerView);
 
-        // Setup RecyclerView with horizontal layout
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        texturesRecyclerView.setLayoutManager(layoutManager);
+        LinearLayout texturesContainer = patternContent.findViewById(R.id.texturesContainer);
 
-        // Setup adapter
-        textureAdapter = new TextureAdapter(textureList, (texture, position) -> {
+        textureBinder = new TextureViewBinder(texturesContainer, new ArrayList<>(), (texture, position) -> {
             if (listener != null) {
                 listener.onTextureSelected(texture);
             }
         });
-        texturesRecyclerView.setAdapter(textureAdapter);
 
         // Load textures from Unsplash
         loadTexturesFromUnsplash();
-
-        // Pagination on scroll
-        texturesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (manager != null) {
-                    int visibleItemCount = manager.getChildCount();
-                    int totalItemCount = manager.getItemCount();
-                    int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
-
-                    if (!isLoadingTextures && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 2) {
-                        loadTexturesFromUnsplash();
-                    }
-                }
-            }
-        });
-
-        // See All button - hide for now since we have pagination
-        seeAllCard.setVisibility(View.GONE);
     }
 
     private void loadTexturesFromUnsplash() {
-        if (isLoadingTextures) return;
-
-        isLoadingTextures = true;
-
         // Use different search query based on mode
         String searchQuery = "texture pattern";
 
         WallpaperClient.getApi().getSearchMedia(
-                "photos",
-                currentPage,
+                "illustrations",
+                1,
                 20,
                 "landscape",
                 searchQuery
-        ).enqueue(new Callback<SearchResponse>() {
+        ).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
-                isLoadingTextures = false;
 
                 if (response.isSuccessful() && response.body() != null) {
                     SearchResponse searchResponse = response.body();
                     List<Media> newTextures = searchResponse.getResults();
 
                     if (newTextures != null && !newTextures.isEmpty()) {
-                        if (textureAdapter != null) {
-                            textureAdapter.addTextures(newTextures);
-                            currentPage++;
+                        if (textureBinder != null) {
+                            textureBinder.addTextures(newTextures);
                         }
                     }
                 }
@@ -332,7 +294,6 @@ public class ColorPickerBottomSheet extends BottomSheetDialogFragment {
 
             @Override
             public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t) {
-                isLoadingTextures = false;
                 Toast.makeText(getContext(), "Failed to load images", Toast.LENGTH_SHORT).show();
             }
         });

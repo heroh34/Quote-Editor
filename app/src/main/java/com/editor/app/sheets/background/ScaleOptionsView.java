@@ -9,13 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
 import com.editor.app.R;
-import com.editor.app.sheets.BackgroundEditBottomSheet;
 import com.editor.app.sheets.BackgroundEditBottomSheet.ScaleType;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.slider.Slider;
 
 public class ScaleOptionsView extends LinearLayout {
 
@@ -40,11 +37,17 @@ public class ScaleOptionsView extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_scale_options, this, true);
+        // Set layout params to match parent
+        setLayoutParams(new LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+        ));
+
         setupViews();
     }
 
     private void setupViews() {
-
+        scaleTypesContainer = findViewById(R.id.scaleTypesContainer);
         // Setup scale type buttons
         setupScaleTypeButtons();
     }

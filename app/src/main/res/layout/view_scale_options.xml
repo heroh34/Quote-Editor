@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="12dp"
+    android:scrollbars="none">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/scaleTypesContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxHeight="200dp">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <LinearLayout
-            android:id="@+id/scaleTypesContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clipToPadding="false"
-            android:paddingBottom="8dp">
+        <!-- Scale type items will be added dynamically -->
 
-            <!-- Scale type items will be added dynamically -->
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+</HorizontalScrollView>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/alignLeftButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_align_left_24px"
+            android:contentDescription="Align Left" />
+
+        <ImageButton
+            android:id="@+id/alignCenterButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_align_center_24px"
+            android:contentDescription="Align Center" />
+
+        <ImageButton
+            android:id="@+id/alignRightButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_align_right_24px"
+            android:contentDescription="Align Right" />
+
+        <ImageButton
+            android:id="@+id/alignJustifyButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_align_justify_24px"
+            android:contentDescription="Justify" />
+
+        <ImageButton
+            android:id="@+id/uppercaseButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/text_format_24px"
+            android:contentDescription="Uppercase" />
+
+        <ImageButton
+            android:id="@+id/lowercaseButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/text_format_24px"
+            android:contentDescription="Lowercase" />
+
+        <ImageButton
+            android:id="@+id/capitalizeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/text_format_24px"
+            android:contentDescription="Capitalize" />
+
+        <ImageButton
+            android:id="@+id/boldButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_bold_24px"
+            android:contentDescription="Bold" />
+
+        <ImageButton
+            android:id="@+id/italicButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_italic_24px"
+            android:contentDescription="Italic" />
+
+        <ImageButton
+            android:id="@+id/underlineButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/format_underlined_24px"
+            android:contentDescription="Underline" />
+
+    </LinearLayout>
+
+</HorizontalScrollView>

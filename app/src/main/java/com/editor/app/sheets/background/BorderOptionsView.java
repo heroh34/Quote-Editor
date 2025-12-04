@@ -1,12 +1,12 @@
 package com.editor.app.sheets.background;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -15,23 +15,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.editor.app.R;
 import com.editor.app.api.WallpaperClient;
 import com.editor.app.api.models.Media;
 import com.editor.app.api.models.SearchResponse;
 import com.editor.app.sheets.BackgroundEditBottomSheet.BorderType;
-import com.editor.app.sheets.adapters.ColorAdapter;
-import com.editor.app.sheets.adapters.GradientAdapter;
-import com.editor.app.sheets.adapters.TextureAdapter;
+import com.editor.app.sheets.adapters.ColorViewBinder;
+import com.editor.app.sheets.adapters.GradientViewBinder;
+import com.editor.app.sheets.adapters.TextureViewBinder;
 import com.editor.app.sheets.models.ColorItem;
 import com.editor.app.sheets.models.GradientItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +44,19 @@ public class BorderOptionsView extends LinearLayout {
 
     public interface BorderOptionsViewListener {
         void onBorderStateChanged(boolean isOn, int size, int opacity);
+
         void onBorderTypeChanged(BorderType type, int color);
+
         void onSolidColorSelected(int color);
+
         void onGradientSelected(GradientItem gradient);
+
         void onTextureSelected(Media texture);
+
         void onColorPickerClicked();
+
         void onGradientPickerClicked();
+
         void onSeeAllTexturesClicked();
     }
 
@@ -73,10 +79,7 @@ public class BorderOptionsView extends LinearLayout {
     private View offContent, sizeContent, solidContent, gradientContent, patternContent, opacityContent;
 
     // Texture data
-    private TextureAdapter textureAdapter;
-    private List<Media> textureList = new ArrayList<>();
-    private int currentPage = 1;
-    private boolean isLoadingTextures = false;
+    private TextureViewBinder textureBinder;
 
     public BorderOptionsView(Context context) {
         super(context);
@@ -179,33 +182,23 @@ public class BorderOptionsView extends LinearLayout {
         contentContainer.addView(offContent);
     }
 
+    @SuppressLint("SetTextI18n")
     private void showSizeContent() {
         if (sizeContent == null) {
             sizeContent = LayoutInflater.from(getContext())
                     .inflate(R.layout.border_content_size, contentContainer, false);
 
-            SeekBar sizeSlider = sizeContent.findViewById(R.id.sizeSlider);
+            Slider sizeSlider = sizeContent.findViewById(R.id.sizeSlider);
             TextView sizeValue = sizeContent.findViewById(R.id.sizeValue);
 
-            sizeSlider.setProgress(currentSize);
+            sizeSlider.setValue(currentSize);
             sizeValue.setText(currentSize + "px");
 
-            sizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser) {
-                        currentSize = progress;
-                        sizeValue.setText(currentSize + "px");
-                        notifyBorderStateChanged();
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
+            sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
+                if (fromUser) {
+                    currentSize = (int) value;
+                    sizeValue.setText(currentSize + "px");
+                    notifyBorderStateChanged();
                 }
             });
         }
@@ -225,20 +218,17 @@ public class BorderOptionsView extends LinearLayout {
     private void setupSolidColorPickers() {
         MaterialCardView gradientPickerCard = solidContent.findViewById(R.id.gradientPickerCard);
         MaterialCardView eyedropperCard = solidContent.findViewById(R.id.eyedropperCard);
-        RecyclerView colorsRecyclerView = solidContent.findViewById(R.id.colorsRecyclerView);
 
-        // Setup RecyclerView
-        colorsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), HORIZONTAL, false));
-
-        // Create color list
         List<ColorItem> colors = createColorList();
-        ColorAdapter adapter = new ColorAdapter(colors, (color, position) -> {
+
+        LinearLayout colorsContainer = solidContent.findViewById(R.id.colorsContainer);
+
+        new ColorViewBinder(colorsContainer, colors, (color, position) -> {
             currentColor = color;
             if (listener != null) {
                 listener.onSolidColorSelected(color);
             }
         });
-        colorsRecyclerView.setAdapter(adapter);
 
         // Picker card listeners
         gradientPickerCard.setOnClickListener(v -> {
@@ -265,19 +255,17 @@ public class BorderOptionsView extends LinearLayout {
 
     private void setupGradientPickers() {
         MaterialCardView gradientPickerCard = gradientContent.findViewById(R.id.gradientPickerCard);
-        RecyclerView gradientsRecyclerView = gradientContent.findViewById(R.id.gradientsRecyclerView);
 
         // Setup RecyclerView
-        gradientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), HORIZONTAL, false));
-
-        // Create gradient list
         List<GradientItem> gradients = createGradientList();
-        GradientAdapter adapter = new GradientAdapter(gradients, (gradient, position) -> {
+
+        LinearLayout gradientsContainer = gradientContent.findViewById(R.id.gradientsContainer);
+
+        new GradientViewBinder(gradientsContainer, gradients, (gradient, position) -> {
             if (listener != null) {
                 listener.onGradientSelected(gradient);
             }
         });
-        gradientsRecyclerView.setAdapter(adapter);
 
         // Picker card listener
         gradientPickerCard.setOnClickListener(v -> {
@@ -299,76 +287,49 @@ public class BorderOptionsView extends LinearLayout {
 
     private void setupPatternPickers() {
         MaterialCardView seeAllCard = patternContent.findViewById(R.id.seeAllPatternsCard);
-        RecyclerView texturesRecyclerView = patternContent.findViewById(R.id.patternsRecyclerView);
+        LinearLayout texturesContainer = patternContent.findViewById(R.id.texturesContainer);
+        MaterialCardView removeCard = patternContent.findViewById(R.id.removePatternCard);
 
-        // Setup RecyclerView with horizontal layout
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), HORIZONTAL, false);
-        texturesRecyclerView.setLayoutManager(layoutManager);
-
-        // Setup adapter
-        textureAdapter = new TextureAdapter(textureList, (texture, position) -> {
+        textureBinder = new TextureViewBinder(texturesContainer, new ArrayList<>(), (texture, position) -> {
             if (listener != null) {
                 listener.onTextureSelected(texture);
             }
         });
-        texturesRecyclerView.setAdapter(textureAdapter);
 
-        // Load textures from Unsplash
-        loadTexturesFromUnsplash();
-
-        // Pagination on scroll
-        texturesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (manager != null) {
-                    int visibleItemCount = manager.getChildCount();
-                    int totalItemCount = manager.getItemCount();
-                    int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
-
-                    if (!isLoadingTextures && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 2) {
-                        loadTexturesFromUnsplash();
-                    }
-                }
-            }
-        });
-
-        // See All button listener
+        // Setup See All button
+        seeAllCard.setVisibility(View.VISIBLE);
         seeAllCard.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onSeeAllTexturesClicked();
             }
         });
+
+        // Setup Remove button
+        removeCard.setOnClickListener(v -> {
+            // Remove selected texture
+        });
+
+        // Load textures from Unsplash
+        loadTexturesFromUnsplash();
     }
 
     private void loadTexturesFromUnsplash() {
-        if (isLoadingTextures) return;
-
-        isLoadingTextures = true;
-
         WallpaperClient.getApi().getSearchMedia(
-                "photos",
-                currentPage,
+                "illustrations",
+                1,
                 20,
-                "landscape",
+                "portrait",
                 "texture pattern"
         ).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
-                isLoadingTextures = false;
 
                 if (response.isSuccessful() && response.body() != null) {
                     SearchResponse searchResponse = response.body();
                     List<Media> newTextures = searchResponse.getResults();
 
                     if (newTextures != null && !newTextures.isEmpty()) {
-                        if (textureAdapter != null) {
-                            textureAdapter.addTextures(newTextures);
-                            currentPage++;
-                        }
-                        Log.d(TAG, "Loaded " + newTextures.size() + " textures from page " + currentPage);
+                        textureBinder.addTextures(newTextures);
                     }
                 } else {
                     Log.e(TAG, "Failed to load textures: " + response.code());
@@ -377,40 +338,28 @@ public class BorderOptionsView extends LinearLayout {
 
             @Override
             public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t) {
-                isLoadingTextures = false;
                 Log.e(TAG, "Error loading textures", t);
-                Toast.makeText(getContext(), "Failed to load textures", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void showOpacityContent() {
         if (opacityContent == null) {
             opacityContent = LayoutInflater.from(getContext())
                     .inflate(R.layout.border_content_opacity, contentContainer, false);
 
-            SeekBar opacitySlider = opacityContent.findViewById(R.id.opacitySlider);
+            Slider opacitySlider = opacityContent.findViewById(R.id.opacitySlider);
             TextView opacityValue = opacityContent.findViewById(R.id.opacityValue);
 
-            opacitySlider.setProgress(currentOpacity);
+            opacitySlider.setValue(currentOpacity);
             opacityValue.setText(currentOpacity + "%");
 
-            opacitySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser) {
-                        currentOpacity = progress;
-                        opacityValue.setText(currentOpacity + "%");
-                        notifyBorderStateChanged();
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
+            opacitySlider.addOnChangeListener((slider, value, fromUser) -> {
+                if (fromUser) {
+                    currentOpacity = (int) value;
+                    opacityValue.setText(currentOpacity + "%");
+                    notifyBorderStateChanged();
                 }
             });
         }

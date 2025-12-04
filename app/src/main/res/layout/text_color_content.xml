@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingHorizontal="8dp">
+
+    <!-- Color Sub-Option Chips (Solid, Gradient, Pattern) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/textColorChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacing="8dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSolid"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Solid"
+                app:checkedIconVisible="false"
+                app:chipCornerRadius="20dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipGradient"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gradient"
+                app:checkedIconVisible="false"
+                app:chipCornerRadius="20dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPattern"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pattern"
+                app:checkedIconVisible="false"
+                app:chipCornerRadius="20dp" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <!-- Dynamic Color Content Container -->
+    <FrameLayout
+        android:id="@+id/textColorTabContentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <!-- Content will be added dynamically -->
+
+    </FrameLayout>
+
+</LinearLayout>

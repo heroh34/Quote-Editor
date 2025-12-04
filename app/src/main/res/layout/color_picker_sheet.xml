@@ -18,8 +18,10 @@
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="32dp"
+            android:layout_marginEnd="8dp"
             android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/circular"
+            app:tint="@color/md_theme_onPrimary"
             android:src="@drawable/chevron_backward_24px"
             android:contentDescription="Back" />
 
@@ -53,8 +55,7 @@
     <FrameLayout
         android:id="@+id/colorPickerContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="120dp">
+        android:layout_height="120dp">
 
         <!-- Content views will be added dynamically -->
 

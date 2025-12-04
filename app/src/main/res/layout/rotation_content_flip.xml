@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <!-- Flip Horizontal Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/flipHorizontalButton"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Horizontal"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="center"
+        app:iconSize="32dp"
+        app:iconGravity="top"
+        app:iconPadding="8dp"
+        app:cornerRadius="16dp" />
+
+    <!-- Flip Vertical Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/flipVerticalButton"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Vertical"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="center"
+        app:iconSize="32dp"
+        app:iconGravity="top"
+        app:iconPadding="8dp"
+        app:cornerRadius="16dp" />
+
+</LinearLayout>

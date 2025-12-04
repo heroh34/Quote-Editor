@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingHorizontal="8dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            app:chipSpacing="8dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/vertical_top_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_vertical_top_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/vertical_center_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_vertical_center_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/vertical_bottom_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_vertical_bottom_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/horizontal_left_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_horizontal_left_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/horizontal_center_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_horizontal_center_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/horizontal_right_btn"
+                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Left"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/align_horizontal_right_24px"
+                app:iconGravity="textEnd"
+                app:iconSize="24dp" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

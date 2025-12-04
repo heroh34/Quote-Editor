@@ -17,6 +17,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            app:menu="@menu/edit_bar_menu"
+            app:navigationIcon="@drawable/arrow_back_24px"
             android:layout_height="?attr/actionBarSize"
             android:elevation="0dp" />
 
@@ -28,6 +30,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
         android:layout_below="@id/appbar">
+
 
 
     </FrameLayout>
@@ -87,6 +90,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
+                        android:id="@+id/image_edit_options"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/ripple_circular"

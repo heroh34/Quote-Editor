@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_stack"
+        android:title="Stack"
+        android:icon="@drawable/stacks_24px"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_copy"
+        android:title="Stack"
+        android:icon="@drawable/content_copy_24px"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_undo"
+        android:title="Undo"
+        android:icon="@drawable/undo_24px"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_redo"
+        android:title="Redo"
+        android:icon="@drawable/redo_24px"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_custom_button"
+        app:actionLayout="@layout/menu_button"
+        app:showAsAction="always" />
+
+</menu>

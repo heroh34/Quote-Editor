@@ -3,46 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <!-- Solid/Gradient Tabs -->
-    <LinearLayout
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/imageColorChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:background="@drawable/tab_background"
-        android:padding="4dp"
-        android:layout_marginBottom="12dp">
+        app:chipSpacing="8dp"
+        app:singleSelection="true">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/solidTabButton"
-            style="@style/Widget.Material3.Button.TextButton"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSolid"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:text="Solid"
-            android:background="@drawable/tab_button_selector"
-            android:paddingHorizontal="24dp"
-            android:textAllCaps="false" />
+            android:checked="true"
+            app:checkedIconVisible="false"
+            app:chipCornerRadius="20dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/gradientTabButton"
-            style="@style/Widget.Material3.Button.TextButton"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGradient"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:text="Gradient"
-            android:background="@drawable/tab_button_selector"
-            android:paddingHorizontal="24dp"
-            android:textAllCaps="false" />
+            app:checkedIconVisible="false"
+            app:chipCornerRadius="20dp" />
 
-    </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
 
     <!-- Content Switcher -->
     <FrameLayout
         android:id="@+id/colorTabContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp">
 
         <!-- Content will switch between solid and gradient -->
 

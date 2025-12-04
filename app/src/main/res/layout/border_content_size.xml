@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_gravity="center_vertical"
+    android:paddingHorizontal="8dp">
 
     <TextView
         android:id="@+id/sizeValue"
@@ -11,13 +13,42 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="5px"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
-    <SeekBar
-        android:id="@+id/sizeSlider"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="49"
-        android:progress="5"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/add_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circular"
+            android:src="@drawable/add_24px"
+            app:tint="@color/md_theme_onPrimary" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sizeSlider"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:valueFrom="0"
+            android:valueTo="100"
+            android:value="50"
+            android:stepSize="1"
+            android:thumb="@drawable/seekbar_thumb" />
+
+        <ImageButton
+            android:id="@+id/minus_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circular"
+            android:padding="8dp"
+            android:src="@drawable/remove_24px"
+            app:tint="@color/md_theme_onPrimary" />
+
+    </LinearLayout>
 
 </LinearLayout>
